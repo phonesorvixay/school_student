@@ -136,6 +136,7 @@ class ScoreController
                 $data3 = $db->query($sql3);
                 $data2[$a]['score'] = $data3;
             }
+
             $sql4 = "select count(*) as count_parent from month where month_parent='$get->month_parent' ";
             $data4 = $db->query($sql4);
             $data1[$i]['count_parent'] = $data4[0]['count_parent'];
