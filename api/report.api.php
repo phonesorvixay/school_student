@@ -22,6 +22,8 @@ try {
         $control->reportStudentRegister($model);
     } else if ($m == "report_no_register") {
         $control->reportStudentNoRegister($model);
+    } else if ($m == "report_assess_leaning_by_class") {
+        $control->reportAssessLeaningByClass($model);
     } else {
         PrintJSON("", "wrong method!!!", 0);
     }

@@ -90,4 +90,87 @@ class ReportController
             print_r($e);
         }
     }
+
+    public function reportAssessLeaningByClass($get)
+    {
+        $db = new DatabaseController();
+        $sql1 = "select register_id,r.student_id,s.name,surname,s.image,gender,birthday,birth_address,address,guardian,tribes,s.remark,s.status,
+                r.class_id,c.class_name,c.course_id,register_date,r.year_id,y.year_name,r.user_id,u.name,date_payment
+                from register as r
+                INNER JOIN student as s ON r.student_id = s.student_id
+                INNER JOIN class as c ON r.class_id = c.class_id
+                INNER JOIN school_year as y ON r.year_id =y.year_id
+                INNER JOIN user as u ON r.user_id = u.user_id
+                where r.class_id='$get->class_id' and r.year_id='$get->year_id'
+                order by class_id desc ";
+        // echo $sql;die();
+        $data1 = $db->query($sql1);
+        $count = $data1 > 0 ? count($data1) : "";
+        for ($i = 0; $i < $count; $i++) {
+            $course_id = $data1[$i]['course_id'];
+            $register_id = $data1[$i]['register_id'];
+            $sql2 = "select d.subject_id,subject_name 
+                    from course_detail as d
+                    INNER JOIN subject as s ON d.subject_id = s.subject_id
+                    where course_id = '$course_id' order by detail_number asc";
+            $data2 = $db->query($sql2);
+
+            $count2 = $data2 > 0 ? count($data2) : "";
+            for ($a = 0; $a < $count2; $a++) {
+                $subject_id = $data2[$a]['subject_id'];
+                $sql3 = "select score_number,s.month_id,month_name
+                        from score as s
+                        INNER JOIN month as m ON s.month_id = m.month_id
+                        where subject_id = '$subject_id' and register_id='$register_id'";
+                $data3 = $db->query($sql3);
+                $data2[$a]['score'] = $data3;
+            }
+            $data1[$i]['subject'] = $data2;
+        }
+        $list = json_encode($data1);
+        echo $list;
+    }
+
+    public function reportAssessLeaningYear($get)
+    {
+        $db = new DatabaseController();
+        $sql1 = "select register_id,r.student_id,s.name,surname,s.image,gender,birthday,birth_address,address,guardian,tribes,s.remark,s.status,
+                r.class_id,c.class_name,c.course_id,register_date,r.year_id,y.year_name,r.user_id,u.name,date_payment
+                from register as r
+                INNER JOIN student as s ON r.student_id = s.student_id
+                INNER JOIN class as c ON r.class_id = c.class_id
+                INNER JOIN school_year as y ON r.year_id =y.year_id
+                INNER JOIN user as u ON r.user_id = u.user_id
+                where r.class_id='$get->class_id' and r.year_id='$get->year_id'
+                order by class_id desc ";
+        // echo $sql;die();
+        $data1 = $db->query($sql1);
+        $count = $data1 > 0 ? count($data1) : "";
+
+
+
+        for ($i = 0; $i < $count; $i++) {
+            $course_id = $data1[$i]['course_id'];
+            $register_id = $data1[$i]['register_id'];
+            $sql2 = "select d.subject_id,subject_name 
+                    from course_detail as d
+                    INNER JOIN subject as s ON d.subject_id = s.subject_id
+                    where course_id = '$course_id' order by detail_number asc";
+            $data2 = $db->query($sql2);
+
+            $count2 = $data2 > 0 ? count($data2) : "";
+            for ($a = 0; $a < $count2; $a++) {
+                $subject_id = $data2[$a]['subject_id'];
+                $sql3 = "select score_number,s.month_id,month_name
+                        from score as s
+                        INNER JOIN month as m ON s.month_id = m.month_id
+                        where subject_id = '$subject_id' and register_id='$register_id'";
+                $data3 = $db->query($sql3);
+                $data2[$a]['score'] = $data3;
+            }
+            $data1[$i]['subject'] = $data2;
+        }
+        $list = json_encode($data1);
+        echo $list;
+    }
 }

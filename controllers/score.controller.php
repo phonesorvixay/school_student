@@ -78,10 +78,10 @@ class ScoreController
                 order by class_id desc ";
         // echo $sql;die();
         $data1 = $db->query($sql1);
-        $count = $data1 > 0 ? count($data1) : ""; 
-        for ($i = 0; $i < $count; $i++) { 
-            $course_id = $data1[$i]['course_id']; 
-            $register_id = $data1[$i]['register_id']; 
+        $count = $data1 > 0 ? count($data1) : "";
+        for ($i = 0; $i < $count; $i++) {
+            $course_id = $data1[$i]['course_id'];
+            $register_id = $data1[$i]['register_id'];
             $sql2 = "select d.subject_id,subject_name 
                     from course_detail as d 
                     INNER JOIN subject as s ON d.subject_id = s.subject_id
@@ -93,7 +93,7 @@ class ScoreController
                 $subject_id = $data2[$a]['subject_id'];
                 $sql3 = "select score_number from score 
                         where subject_id = '$subject_id' and register_id='$register_id' and month_id='$get->month_id'";
-                        $data3 = $db->query($sql3);
+                $data3 = $db->query($sql3);
                 $data2[$a]['score'] = $data3[0]['score_number'];
             }
             $data1[$i]['subject'] = $data2;
@@ -101,6 +101,7 @@ class ScoreController
         $list = json_encode($data1);
         echo $list;
     }
+
     public function scoreListTerm($get)
     {
         $db = new DatabaseController();
@@ -128,13 +129,18 @@ class ScoreController
             $count2 = $data2 > 0 ? count($data2) : "";
             for ($a = 0; $a < $count2; $a++) {
                 $subject_id = $data2[$a]['subject_id'];
-                $sql3 = "select score_number,s.month_id,month_name
+                $sql3 = "select score_number,s.month_id,month_name,month_parent
                         from score as s
                         INNER JOIN month as m ON s.month_id = m.month_id
-                        where subject_id = '$subject_id' and register_id='$register_id' and m.month_parent='$get->month_parent' or s.month_id='$get->month_id' ";
-                        $data3 = $db->query($sql3);
+                        where subject_id = '$subject_id' and register_id='$register_id' and (m.month_parent='$get->month_parent' or s.month_id='$get->month_parent' )";
+                $data3 = $db->query($sql3);
                 $data2[$a]['score'] = $data3;
             }
+            $sql4 = "select count(*) as count_parent from month where month_parent='$get->month_parent' ";
+            $data4 = $db->query($sql4);
+            $data1[$i]['count_parent'] = $data4[0]['count_parent'];
+
+
             $data1[$i]['subject'] = $data2;
         }
         $list = json_encode($data1);
