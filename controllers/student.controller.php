@@ -136,7 +136,6 @@ class StudentController
         } catch (Exception $e) {
             print_r($e);
         }
-
     }
     public function studentNotRegister($get)
     {
@@ -192,6 +191,5 @@ class StudentController
         } catch (Exception $e) {
             print_r($e);
         }
-
     }
 }
