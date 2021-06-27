@@ -5,7 +5,7 @@ class DatabaseController
     private $dbhost = "localhost";
     private $dbuser = "root";
     private $dbpass = "";
-    private $dbname = "school";
+    private $dbname = "school_student";
     private $charset = "utf8";
     protected $show_errors = true;
 
