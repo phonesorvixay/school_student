@@ -10,20 +10,21 @@ class TeacherController
     {
         try {
             $db = new DatabaseController();
-            if(isset($std->image) && $std->image != ""){
+            if (isset($std->image) && $std->image != "") {
+                $rand = rand();
                 $type = explode('/', explode(';', $std->image)[0])[1];
                 $p = preg_replace('#^data:image/\w+;base64,#i', '', $std->image);
-                $name_image = "student-$std->name-$std->surname-$std->birthday.$type";
+                $name_image = "student-$rand-$std->birthday.$type";
                 $name = MY_PATH . $name_image;
                 $images = base64_to_jpeg($p, $name);
-            }else{
-                $name_image="";
+            } else {
+                $name_image = "";
             }
-            
+
 
             $sql = "insert into teacher (name,surname,gender,birthday,address,phonenumber,status,image) 
             values ('$std->name','$std->surname','$std->gender','$std->birthday','$std->address','$std->phonenumber','$std->status','$name_image')";
-            
+
             // echo $sql;die();
             $data = $db->query($sql);
             if ($data) {
@@ -40,21 +41,22 @@ class TeacherController
         try {
             $db = new DatabaseController();
 
-            if(isset($std->image) && $std->image != ""){
+            if (isset($std->image) && $std->image != "") {
+                $rand = rand();
                 $type = explode('/', explode(';', $std->image)[0])[1];
                 $p = preg_replace('#^data:image/\w+;base64,#i', '', $std->image);
-                $name_image = "student-$std->name-$std->surname-$std->birthday.$type";
+                $name_image = "student-$rand-$std->birthday.$type";
                 $name = MY_PATH . $name_image;
                 $images = base64_to_jpeg($p, $name);
-            }else{
-                $name_image="";
+            } else {
+                $name_image = "";
             }
-            
 
-                $sql = "update teacher set name='$std->name',surname='$std->surname',gender='$std->gender',birthday='$std->birthday',address='$std->address',phonenumber='$std->phonenumber',
+
+            $sql = "update teacher set name='$std->name',surname='$std->surname',gender='$std->gender',birthday='$std->birthday',address='$std->address',phonenumber='$std->phonenumber',
                     status='$std->status',image='$name_image' where teacher_id='$std->teacher_id';";
-                    
-                    $data = $db->query($sql); 
+
+            $data = $db->query($sql);
             // echo $sql;die();
             if ($data) {
                 PrintJSON("", "udpate teacher OK!", 1);
@@ -135,7 +137,6 @@ class TeacherController
         } catch (Exception $e) {
             print_r($e);
         }
-
     }
     public function getTeacher($get)
     {

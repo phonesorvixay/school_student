@@ -14,9 +14,10 @@ class StudentController
             if (!isset($std->image) || $std->image == "") {
                 $name_image = "";
             } else {
+                $rand = rand();
                 $type = explode('/', explode(';', $std->image)[0])[1];
                 $p = preg_replace('#^data:image/\w+;base64,#i', '', $std->image);
-                $name_image = "student-$std->name-$std->surname-$std->birthday.$type";
+                $name_image = "student-$rand-$std->birthday.$type";
                 $name = MY_PATH . $name_image;
                 $image = base64_to_jpeg($p, $name);
             }
@@ -43,9 +44,10 @@ class StudentController
             if (!isset($std->image) || $std->image == "") {
                 $name_image = "";
             } else {
+                $rand = rand();
                 $type = explode('/', explode(';', $std->image)[0])[1];
                 $p = preg_replace('#^data:image/\w+;base64,#i', '', $std->image);
-                $name_image = "student-$std->name-$std->surname-$std->birthday.$type";
+                $name_image = "student-$rand-$std->birthday.$type";
                 $name = MY_PATH . $name_image;
                 $image = base64_to_jpeg($p, $name);
             }
