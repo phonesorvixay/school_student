@@ -58,8 +58,8 @@ class MonthModel
     }
     public function validateMonth_parent(){
         if($this->month_parent == ""){
-            PrintJSON("","month parent is empty!",0);
-            die();
+           // PrintJSON("","month parent is empty!",0);
+           // die();
         }
     }
 }

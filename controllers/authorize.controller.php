@@ -12,11 +12,9 @@ class LoginController
     {
         $db = new DatabaseController();
         $sql = "select * from user where username='$u->username' and password='$u->password' and status = 1";
-        $sql1 = "select user_id,name,username,u.role_id,
-                role_name,permission,r.default_department
-                from user as u
-                INNER JOIN role as r ON u.role_id = r.role_id
-                where username='$u->username' and password='$u->password' and u.status = 1";
+        $sql1 = "select user_id,name,username,u.role_id
+                                from user as u
+                          where username='$u->username' and password='$u->password' and u.status = 1";
         $name = $db->query($sql);
         $list = $db->query($sql1);
         $row = $name[0];
